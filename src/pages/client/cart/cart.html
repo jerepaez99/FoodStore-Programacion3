@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../../style.css">
+    <title>Food Store — Carrito</title>
+</head>
+
+<body class="cart-page">
+    <header class="header">
+        <h1>Food Store</h1>
+        <nav class="header-actions">
+            <a href="../home/home.html" id="catalogLink">Volver al catálogo</a>
+            <button id="logoutButton">Logout</button>
+        </nav>
+    </header>
+
+    <main class="cart">
+        <h2>Mi carrito</h2>
+        <p id="emptyCart" hidden>Tu carrito está vacío. Volvé al catálogo para agregar productos.</p>
+
+        <ul id="cartItems" class="cart-items"></ul>
+
+        <p id="cartTotal" class="cart-total">Total: $0</p>
+
+        <button id="clearCartButton">Vaciar el carrito</button>
+    </main>
+
+    <script type="module" src="../../../main.ts"></script>
+    <script type="module" src="./cart.ts"></script>
+</body>
+
+</html>

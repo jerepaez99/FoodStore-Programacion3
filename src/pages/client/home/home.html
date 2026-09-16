@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../../style.css">
+    <title>Food Store — Catálogo</title>
+</head>
+
+<body class="catalog-page">
+    <header class="header">
+        <h1>Food Store</h1>
+        <nav class="header-actions">
+            <a href="../cart/cart.html" id="cartLink">
+                Carrito <span id="cartQty">0</span>
+            </a>
+            <button id="logoutButton">Logout</button>
+        </nav>
+    </header>
+
+    <main class="layout">
+        <aside class="filters">
+            <section>
+                <h2>Búsqueda</h2>
+                <input type="text" id="searchInput" placeholder="Buscar producto por nombre..." />
+            </section>
+            <section>
+                <h2>Categorías</h2>
+                <nav id="categoryButtons"></nav>
+            </section>
+        </aside>
+
+        <section class="catalog">
+            <h2>Catálogo</h2>
+            <p id="noResults" hidden>No encontré productos que coincidan con tu búsqueda.</p>
+            <div id="productGrid" class="product-grid"></div>
+        </section>
+    </main>
+
+    <script type="module" src="../../../main.ts"></script>
+    <script type="module" src="./home.ts"></script>
+</body>
+
+</html>
