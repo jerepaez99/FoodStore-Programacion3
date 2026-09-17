@@ -40,6 +40,20 @@ export const setCantidad = (id: number, cantidad: number) => {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
 };
 
+
+export const removeFromCart = (id: number): void => {
+  const cart = getCart();
+
+  const cartActualizado = cart.filter(
+    (item) => item.id !== id
+  );
+
+  localStorage.setItem(
+    CART_KEY,
+    JSON.stringify(cartActualizado)
+  );
+};
+
 export const getCartTotal = (): number => {
   return getCart().reduce((total, item) => total + item.precio * item.cantidad, 0);
 };

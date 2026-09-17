@@ -1,5 +1,5 @@
 import { logout } from "../../../utils/auth";
-import { getCart, getCartTotal, setCantidad, clearCart } from "../../../utils/cart";
+import { getCart, getCartTotal, setCantidad, clearCart, removeFromCart } from "../../../utils/cart";
 import type { ICartItem } from "../../../types/product";
 
 const buttonLogout = document.getElementById(
@@ -23,6 +23,7 @@ const crearItem = (item: ICartItem) => {
     <span class="cantidad">x${item.cantidad}</span>
     <button data-accion="restar" data-id="${item.id}">&minus;</button>
     <button data-accion="sumar" data-id="${item.id}">+</button>
+    <button class="eliminar" data-accion="eliminar" data-id="${item.id}" aria-label="Eliminar ${item.nombre} del carrito" title="Eliminar producto"> 🗑️ </button>
   `;
   return li;
 };
@@ -35,6 +36,7 @@ export const renderCart = () => {
 
   emptyCart.hidden = !estaVacio;
   cartTotal.hidden = estaVacio;
+  clearCartButton.hidden = estaVacio;
 
   items.forEach((item) => {
     itemList.appendChild(crearItem(item));
@@ -68,11 +70,18 @@ const onItemsClick = (event: MouseEvent) => {
     return;
   }
 
+  if (accion === "eliminar") {
+    removeFromCart(id);
+    renderCart();
+    return;
+  }
+
   const siguiente = accion === "sumar" ? item.cantidad + 1 : item.cantidad - 1;
   setCantidad(id, siguiente);
   renderCart();
 
 };
+
 
 itemList.addEventListener("click", onItemsClick);
 renderCart();
