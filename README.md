@@ -1,10 +1,14 @@
 # Food Store — Carrito y Catálogo (Evaluación 1, Programación 3)
 
+## 📹 Link al video
+
+[Video subido en google drive](https://drive.google.com/file/d/1DevR8K985P9QLYLYrZnUKeaymgoAjBsG/view?usp=sharing)
+
 ## ✍️ Descripción
 
-Este es un proyecto de demostración creado con fines educativos. Partimos de una
+Este es un proyecto de demostración creado con fines educativos. Se partió de una
 aplicación multi-página construida con **Vite** y **TypeScript** (sin frameworks,
-sin backend) y agregamos las funcionalidades solicitadas en la evaluación:
+sin backend) y se gregaron las funcionalidades solicitadas en la evaluación:
 
 - **Catálogo de productos**: lista de productos renderizado dinámicamente en la
   página del cliente a partir de datos tipados.
@@ -134,7 +138,7 @@ y al **botón "Carrito"** para ver el carrito.
 │   │       │   └── home.ts     # Lógica del catálogo, búsqueda, filtro
 │   │       └── cart/
 │   │           ├── cart.html   # Vista del carrito
-│   │           └── cart.ts     # Lógica del carrito (lista + total + +/-)
+│   │           └── cart.ts     # Lógica del carrito (lista + total + +/- + eliminar)
 │   ├── types/
 │   │   ├── product.ts          # IProduct, ICartItem
 │   │   └── categoria.ts        # ICategoria
