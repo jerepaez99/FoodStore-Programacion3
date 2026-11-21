@@ -1,9 +1,11 @@
-import type { ICartItem, IProduct } from "../types/product";
+import type { ICartItem } from "../types/product";
+import type { Producto } from "../types/catalogo";
 
 export const CART_KEY = "cart";
 
 export const getCart = (): ICartItem[] => {
   const raw = localStorage.getItem(CART_KEY);
+
   try {
     return JSON.parse(raw ?? "[]") as ICartItem[];
   } catch {
@@ -15,9 +17,13 @@ export const clearCart = (): void => {
   localStorage.removeItem(CART_KEY);
 };
 
-export const addToCart = (producto: IProduct) => {
+export const addToCart = (producto: Producto): void => {
   const cart = getCart();
-  const existente = cart.find((item) => item.id === producto.id);
+
+  const existente = cart.find(
+    (item) => item.id === producto.id
+  );
+
   if (existente) {
     existente.cantidad += 1;
   } else {
@@ -28,18 +34,26 @@ export const addToCart = (producto: IProduct) => {
       cantidad: 1,
     });
   }
+
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
 };
 
-export const setCantidad = (id: number, cantidad: number) => {
+export const setCantidad = (
+  id: number,
+  cantidad: number
+): void => {
   const cart = getCart();
-  const existente = cart.find((item) => item.id === id);
+
+  const existente = cart.find(
+    (item) => item.id === id
+  );
+
   if (existente) {
     existente.cantidad = Math.max(1, cantidad);
   }
+
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
 };
-
 
 export const removeFromCart = (id: number): void => {
   const cart = getCart();
@@ -55,5 +69,8 @@ export const removeFromCart = (id: number): void => {
 };
 
 export const getCartTotal = (): number => {
-  return getCart().reduce((total, item) => total + item.precio * item.cantidad, 0);
+  return getCart().reduce(
+    (total, item) => total + item.precio * item.cantidad,
+    0
+  );
 };

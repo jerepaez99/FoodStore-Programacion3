@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "nombre": "Hamburguesas",
+    "descripcion": "Hamburguesas artesanales con carne premium",
+    "imagen": "/img/hamburguesa-clasica.jpg",
+    "eliminado": false
+  },
+  {
+    "id": 2,
+    "nombre": "Pizzas",
+    "descripcion": "Pizzas al horno de barro",
+    "imagen": "/img/pizza.jpg",
+    "eliminado": false
+  },
+  {
+    "id": 3,
+    "nombre": "Empanadas",
+    "descripcion": "Empanadas caseras horneadas",
+    "imagen": "/vite.svg",
+    "eliminado": false
+  },
+  {
+    "id": 4,
+    "nombre": "Bebidas",
+    "descripcion": "Bebidas frías y calientes",
+    "imagen": "/img/coca500.jpg",
+    "eliminado": false
+  },
+  {
+    "id": 5,
+    "nombre": "Papas Fritas",
+    "descripcion": "Acompañamientos crujientes",
+    "imagen": "/vite.svg",
+    "eliminado": false
+  }
+]

@@ -1,44 +1,63 @@
-import type { IUser } from "../../../types/IUser";
+import type { Usuario } from "../../../types/usuario";
+import { obtenerUsuarios } from "../../../utils/usuarios";
+import { navigate } from "../../../utils/navigate";
 
-const form = document.querySelector<HTMLFormElement>("#form")
-const inputEmail = document.querySelector<HTMLInputElement>("#email")
-const inputPassword = document.querySelector<HTMLInputElement>("#password")
+const form = document.querySelector<HTMLFormElement>("#form");
+const inputNombre = document.querySelector<HTMLInputElement>("#nombre");
+const inputEmail = document.querySelector<HTMLInputElement>("#email");
+const inputPassword = document.querySelector<HTMLInputElement>("#password");
 
-if (!form || !inputEmail || !inputPassword) {
-
-    throw new Error("No se encontraron los elementos del formulario")
-
+if (!form || !inputNombre || !inputEmail || !inputPassword) {
+  throw new Error("No se encontraron los elementos del formulario.");
 }
 
-form.addEventListener("submit", (event: SubmitEvent) => {
-    event.preventDefault();
+form.addEventListener("submit", async (event: SubmitEvent) => {
+  event.preventDefault();
 
-    const email = inputEmail.value.trim();
-    const password = inputPassword.value;
+  if (!form.reportValidity()) {
+    return;
+  }
 
-    const storedUsers = localStorage.getItem("users");
+  const nombre = inputNombre.value.trim();
+  const mail = inputEmail.value.trim();
+  const password = inputPassword.value;
 
-    const users: IUser[] = storedUsers
-        ? (JSON.parse(storedUsers) as IUser[])
-        : [];
+  if (!nombre || !mail) {
+    alert("El nombre y el correo son obligatorios.");
+    return;
+  }
 
-    const emailExists = users.some(
-        (user) => user.email.toLowerCase() === email.toLowerCase()
+  if (password.length < 6 || !password.trim()) {
+    alert("La contraseña debe tener al menos 6 caracteres y no solo espacios.");
+    return;
+  }
+
+  try {
+    const usuarios = await obtenerUsuarios();
+
+    const mailRegistrado = usuarios.some(
+      (usuario) => usuario.mail.toLowerCase() === mail.toLowerCase()
     );
 
-    if (emailExists) {
-        alert("Ya existe un usuario registrado con ese email")
-        return;
-    }        
+    if (mailRegistrado) {
+      alert("Ya existe un usuario registrado con ese correo.");
+      return;
+    }
 
-    const newUser: IUser = {
-        email: email,
-        password: password,
-        role: "client",
+    const nuevoUsuario: Usuario = {
+      id: Date.now(),
+      nombre,
+      apellido: "",
+      mail,
+      celular: "",
+      rol: "USUARIO",
     };
 
-    users.push(newUser);
+    localStorage.setItem("userData", JSON.stringify(nuevoUsuario));
 
-    localStorage.setItem("users", JSON.stringify(users));
+    navigate("/src/pages/client/home/home.html");
+  } catch (error: unknown) {
+    console.error("No se pudo completar el registro:", error);
+    alert("No se pudo completar el registro. Intente nuevamente.");
+  }
 });
-

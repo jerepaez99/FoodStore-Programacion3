@@ -1,42 +1,54 @@
-import type { IUser } from "../../../types/IUser";
+import type { Usuario } from "../../../types/usuario";
+import { obtenerUsuarios } from "../../../utils/usuarios";
 import { navigate } from "../../../utils/navigate";
 
 const form = document.getElementById("form") as HTMLFormElement;
 const inputEmail = document.getElementById("email") as HTMLInputElement;
 const inputPassword = document.getElementById("password") as HTMLInputElement;
 
+form.addEventListener("submit", async (event: SubmitEvent) => {
+  event.preventDefault();
 
-form.addEventListener("submit", (e: SubmitEvent) => {
-  e.preventDefault();
-  const valueEmail = inputEmail.value.trim();
-  const valuePassword = inputPassword.value;
+  const mail = inputEmail.value.trim();
+  const password = inputPassword.value;
 
-  const storedUsers = localStorage.getItem("users");
-
-  if (!storedUsers) {
-    alert("No hay usuarios registrados");
+  if (!mail || !password.trim()) {
+    alert("Debe completar el correo y la contraseña.");
     return;
   }
 
-  const users = JSON.parse(storedUsers) as IUser[]
+  try {
+    const usuarios = await obtenerUsuarios();
 
-  const foundUser = users.find(
-    (user) =>
-      user.email.toLowerCase() === valueEmail.toLowerCase() &&
-      user.password === valuePassword
-  );
+    const usuarioEncontrado = usuarios.find(
+      (usuario) =>
+        usuario.mail.toLowerCase() === mail.toLowerCase() &&
+        usuario.password === password
+    );
 
-  if (!foundUser) {
-    alert("Email o contraseña incorrectos")
-    return;
-  }
+    if (!usuarioEncontrado) {
+      alert("Correo o contraseña incorrectos.");
+      return;
+    }
 
-  localStorage.setItem("userData", JSON.stringify(foundUser));
-    
-  if (foundUser.role === "admin") {
+    const usuarioSesion: Usuario = {
+      id: usuarioEncontrado.id,
+      nombre: usuarioEncontrado.nombre,
+      apellido: usuarioEncontrado.apellido,
+      mail: usuarioEncontrado.mail,
+      celular: usuarioEncontrado.celular,
+      rol: usuarioEncontrado.rol,
+    };
+
+    localStorage.setItem("userData", JSON.stringify(usuarioSesion));
+
+    if (usuarioSesion.rol === "ADMIN") {
       navigate("/src/pages/admin/home/home.html");
-    } else if (foundUser.role === "client") {
+    } else {
       navigate("/src/pages/client/home/home.html");
-    }  
-
+    }
+  } catch (error: unknown) {
+    console.error("No se pudo iniciar sesión:", error);
+    alert("No se pudieron cargar los usuarios. Intente nuevamente.");
+  }
 });

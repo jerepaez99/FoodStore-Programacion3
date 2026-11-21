@@ -1,31 +1,53 @@
 import { navigate } from "./utils/navigate";
-import type { IUser } from "./types/IUser";
+import type { Usuario } from "./types/usuario";
+
+const LOGIN = "/src/pages/auth/login/login.html";
+const ADMIN_HOME = "/src/pages/admin/home/home.html";
+const CLIENT_HOME = "/src/pages/client/home/home.html";
 
 const protectRoutes = (): void => {
+  const userData = localStorage.getItem("userData");
 
-    const userData = localStorage.getItem("userData")
+  if (!userData) {
+    navigate(LOGIN);
+    return;
+  }
 
-    if (!userData) {
-        navigate("/src/pages/auth/login/login.html")
-        return;
-    }
-    
-    const user = JSON.parse(userData) as IUser;
+  let usuario: Usuario;
 
-    const currentPath = window.location.pathname;
-
-    if (
-        currentPath.includes("/admin/") && user.role === "client"
-    ) {
-        navigate("/src/pages/client/home/home.html")
-    }
+  try {
+    usuario = JSON.parse(userData) as Usuario;
 
     if (
-        currentPath.includes("/client/") && user.role === "admin"
+      !usuario ||
+      (usuario.rol !== "ADMIN" && usuario.rol !== "USUARIO")
     ) {
-        navigate("/src/pages/admin/home/home.html")
-    }    
+      throw new Error("La sesión no tiene un rol válido.");
+    }
+  } catch {
+    localStorage.removeItem("userData");
+    navigate(LOGIN);
+    return;
+  }
 
+  const currentPath = window.location.pathname;
+
+  if (currentPath.includes("/admin/") && usuario.rol !== "ADMIN") {
+    navigate(CLIENT_HOME);
+    return;
+  }
+
+  if (
+    currentPath.includes("/client/cart/") &&
+    usuario.rol !== "USUARIO"
+  ) {
+    navigate(ADMIN_HOME);
+    return;
+  }
+
+  if (currentPath === "/" || currentPath === "/index.html") {
+    navigate(usuario.rol === "ADMIN" ? ADMIN_HOME : CLIENT_HOME);
+  }
 };
 
-protectRoutes()
+protectRoutes();
